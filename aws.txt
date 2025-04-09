@@ -1,0 +1,249 @@
+>-how to deploye project on live server (aws)?
+
+>-to deploye project on live server you must have project on "git repo." & the "docker image" in "docker hub repo." so please make sure that this two things 
+
+>-if you want to push Your Poject in git then please refer git.txt file to see how to push project in git
+
+>-if you want to push docker image in the docker hub then please refer docker.txt file to see how to push image in docker hub
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------ 
+
+>-login aws account as root user 
+
+>-click on "EC2"
+
+>-then click on "Instances" 
+
+>-then click on "Launch Instances"
+
+>-then type name of the "EC2 Instance" in the "Name and Tag" field
+
+>-then select "Ubuntu" on "Application and OS Image" filed
+
+>-then select "Ubuntu Server 22.04 LTS (HVM),SSD Volume Type Free tier" and Press "Confirm Changes"
+
+>-then go to "Key Pair Login" and Press "Create New Key Pair" 
+
+>-then enter new "Key Pair Name" their 
+
+>-key pair type "RSA" private key file format " .pem " and then press "Create Key Pair"
+
+>-A ".pem" file will be download in your (Desktop/Laptop) keep that file in secure place because this file we will used later...
+
+>-then go to network settings and allow ">-Allow HTTPS traffic from the internet
+                                           To set up an endpoint, for example when creating a web server
+                                         >-Allow HTTP traffic from the internet
+                                           To set up an endpoint, for example when creating a web server "
+
+  this two permissions check mark only this two permissions and don't change other things there 
+
+>-then press"Launch Instances"
+
+>-your Instance will be launched now to see your instance click on "view all instances"
+
+>-if your instance will not apper their then please referesh the instance window the instance will apper their
+
+>-then click on instance id
+
+>-scroll down and go to "Security menu"
+
+>-and in "Security Menu" Find "Security Groups" and in "Security Group you see the security Id Like "sg-0f762791a3bdaccdc(launch-wizard-1)" click on them"
+
+>-and find "InBound Rules" and in Inbound Rules Click on the "Edit InBound Rules" and then Click on "ADD RULES"
+
+>-and in ADD RULES you have only change the port no. "Type their your server port no. which you want to use to expose your porject"
+
+>-and in CIDR BLOCK you have to chose "0.0.0.0/0" and then Save The Rules
+
+>-and then click on Instances
+
+>-and copy the "Public IPv4 address" of your instane
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+>-now open command prompt. and run some cmd's like
+
+>-Connect to AWS EC2 Instance via SSH
+
+    # ssh -i "C:\Users\Lenovo\Downloads\demo.pem" ubuntu@18.206.89.121
+
+    # ssh -i (-----"Here Is Your .PEM File Path and Name.pem "-----) ubuntu@ (-----"Here Is Your AWS Public IPv4 Address Which We Will Copy When We Make Instance In The AWS "-----)
+
+  modify SSH command as shown and Run that command in your cmd to connect with aws
+--------------------------------------------------------------------------------------------------
+>- then Instal Docker in Aws EC2 Instance
+
+       >- use command to Instal Docker in Your Aws EC2 Instance
+
+#>-Note>:-Some time Grouped Command Will Not Work In Some CMD'S Then Please Prefer Separated Command to install Docker In your AWS Instance Which You Find after grouped command
+
+sudo kill -9 1962
+sudo killall apt apt-get
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+sudo apt-get update
+sudo apt-get install -y docker-ce
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo usermod -aG docker $USER
+-------------------------------------------------------------------------------------------------------
+
+>-this are Separated Command to install Docker In your AWS Instance
+
+# Optional: Kill stuck apt processes (only use if apt is locked) 
+sudo kill -9 1962
+sudo killall apt apt-get
+
+
+# Update package index
+sudo apt-get update
+
+
+# Install packages to allow apt to use a repository over HTTPS
+sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+
+
+# Add Docker’s official GPG key
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+
+# Add Docker APT repository
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+
+
+# Update the package index again with Docker packages included
+sudo apt-get update
+
+
+# Install the latest version of Docker CE (Community Edition)
+sudo apt-get install -y docker-ce
+
+
+# Start Docker and enable it to launch on boot
+sudo systemctl start docker
+sudo systemctl enable docker
+
+
+# Add current user to docker group to run docker without sudo
+sudo usermod -aG docker $USER
+
+
+# Note: You need to log out and log back in (or run `newgrp docker`) for group changes to take effect.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+>-Now check Docker was Install or not in your AWS Instace
+
+# Verify Docker installation
+docker --version
+
+#>-Note>:-when Docker was install in your AWS Instane then this command will show the the version of the Docker in one line otherwise it will return some error like No Such Command Found
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+>-Now Grant Some Permissions to Docker Of the AWS
+
+#>-Note>:-Some time Grouped Command Will Not Work In Some CMD'S Then Please Prefer Separated Command to Grant Some Permissions to Docker Of the AWS Which You Find after grouped command
+
+# Grant Permissions and Restart Docker
+sudo usermod -aG docker $USER
+groups $USER
+sudo systemctl restart docker
+ls -l /var/run/docker.sock
+sudo chmod 666 /var/run/docker.sock
+groups $USER
+sudo systemctl restart docker 
+----------------------------------------------------------------------------
+
+>-this are Separated Command to Grant Some Permissions to Docker Of the AWS
+
+#>-Note>:-Some time permissions will not apply in first time when you run the command if problem occure and cmd will return the permission error then please re-run that commands that will solve your error 
+
+# Grant Permissions and Restart Docker
+sudo usermod -aG docker $USER
+groups $USER
+
+
+# Grant Permissions and Restart Docker
+sudo systemctl restart docker
+ls -l /var/run/docker.sock
+
+
+# Grant Permissions and Restart Docker
+sudo chmod 666 /var/run/docker.sock
+groups $USER
+
+
+# Grant Permissions and Restart Docker
+sudo systemctl restart docker
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+>-Now you have to Login Your Docker
+
+# Log in to Docker on the EC2 Instance
+docker login
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+>-Now you have to Pull Your Docker Hub Image 
+
+# Pull the Docker images from Docker Hub
+docker pull Docer_username/Image_Name:Image_Tag
+           ex:>-docker pull aastiksahu/tomcat:now
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+>-Now you have to Create a Network on AWS
+
+# Create a Network on AWS
+docker network create "Network_Name"
+           ex:>-docker network create aastik-network
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+>-Now you have to Run Web Application Container
+
+# Run Web Application Container
+docker run -d --name "Container_Name" --network "Network_Name" -p "Port_No." "Docker_User_Name"/"Docker_Image_Name":"Docker_Image_Tag"
+           ex:>-docker run -d --name tomcat-container --network aastik-network -p 8080:8080 aastiksahu/tomcat:now
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+>-Now your Web Application is run on Live Server (AWS)
+
+# check your application is runing or not go to browser and search url
+http://"AWS Instance Current IP If Free Tier Use otherwise your static ip"/"Project_Name"
+          ex:>-http://3.90.5.1:4200/aastik.html
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# View Docker Containers
+docker ps
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# View Logs of Docker Container
+docker logs Container_Name
+         ex:>-docker logs tomcat-container
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Stop Specific Docker Container
+docker stop Container_Name
+         ex:>-docker stop tomcat-container
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Start Specific Docker Container
+docker start Container_Name
+         ex:>-docker start tomcat-container
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Remove Specific Docker Container
+docker rm Container_Name
+         ex:>-docker rm tomcat-container
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Remove Docker Images
+docker rmi username/Docker_Image_Name:Docker_Image_Tag
+          ex:>-docker rmi aastiksahu/tomcat:now

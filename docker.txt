@@ -21,15 +21,15 @@ to use the docker hub we must have docker image in the docker desktop
 
 if we have image in the docker desktop we can push that image in the dockerhub repo. using some command that is 
 
->-docker login                                                  :-to login the docker
->-docker tag image name docker_username/image name:tag          :-to gave the tag to the image
+>-docker login                                                       :-to login the docker
+
+>-docker tag Docker_Image_Name Docker_UserName/Docker_Image_Name:Docker_Image_Tag               :-to gave the tag to the image
         ex:>-docker tag tomcat-docker-tomcat aastiksahu/tomcat:now
 
->-docker push docker_username/image name:tag                    :- to push the image in the docker hub repo.
+>-docker push Docker_UserName/Docker_Image_Name:Docker_Image_Tag                                :- to push the image in the docker hub repo.
         ex:>-docker push aastiksahu/tomcat:now
 
->-docker pull docker_username/image name:tag                      :-to pull the image in the docker hub to where you want to pull
-        ex:>-docker pull aastiksahu/tomcat:now
+>-docker pull Docker_UserName/Docker_Image_Name:Docker_Image_Tag                                :-to pull the image in the docker hub to where you want to pull
+        ex:>-docker pull aastiksahu/tomcat:now 
 
  
-

@@ -12,14 +12,14 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git url: 'https://github.com/SawanPanwar/devops-basics.git', branch: 'main' //change url of the repository//
+                git url: 'https://github.com/SawanPanwar/devops-basics.git', branch: 'main'                //change url of the repository//
             }
         }
 
         stage('Deploy Using Docker Compose') {
             steps {
                 script {
-                    dir('tomcat-docker') {                                                         //change directory name//
+                    dir('tomcat-docker') {                                                                 //change directory name//
                         bat 'docker-compose down || docker-compose.exe down'
                         bat 'docker-compose up -d --build || docker-compose.exe up -d --build'
                     }
