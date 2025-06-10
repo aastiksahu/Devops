@@ -28,3 +28,7 @@ git commit -am "aastik"  :- to commit the data in git branch.
 git push origin aastik   :- to push the data in the branch.
 git pull origin main     :- to pull the data from the main branch 
 git checkout -b aastik   :- to create the branch and shift the branch in one cmd
+---------------------------------------------------------------------------------
+
+>- git "check in" is to (add, commit, push) the data in the repo. or branch.
+>- git "check out" is to switch the branch.
